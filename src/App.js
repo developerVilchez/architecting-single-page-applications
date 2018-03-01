@@ -2,7 +2,14 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import articleService from "./domain/ArticleService";
+
 const article1 = articleService.createArticle({title: '12 traits', author: 'Peterson'});
+
+const incrementedArticle = articleService.incrementLikes(article1, 4);
+
+console.log('article1', article1);
+console.log('incrementedArticle', incrementedArticle);
 
 class App extends Component {
   render() {
