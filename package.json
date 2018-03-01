@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "pretyped": "rimraf flow-typed",
-    "flow-typed": "flow-typed install",
+    "typed": "flow-typed install",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
@@ -17,7 +17,9 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1",
-    "uuid": "^3.2.1"
+    "seamless-immutable": "^7.1.3",
+    "uuid": "^3.2.1",
+    "validate.js": "^0.12.0"
   },
   "devDependencies": {
     "flow-bin": "^0.65.0",
