@@ -1,6 +1,6 @@
 // @flow
 import validate from 'validate.js';
-import {Map} from 'immutable';
+import {Map, List} from 'immutable';
 import {Article, ArticleFields} from "./Article";
 
 export const createArticle = (fields: ArticleFields): ?Article => {
@@ -20,7 +20,7 @@ export const createArticle = (fields: ArticleFields): ?Article => {
   return null;
 };
 
-export const incrementLikes = (article: Map<Article>, likes: number): Article => {
+export const incrementLikes = (article: Map<Article>, likes: number): Map<Article> => {
   return article.merge({
     likes
   });

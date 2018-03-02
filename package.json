@@ -9,7 +9,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "flow": "flow"
+    "flow": "flow",
+    "bla": "flow-typed create-stub immutable@3.8.2"
   },
   "dependencies": {
     "firebase": "^4.9.1",
