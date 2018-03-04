@@ -1,36 +1,46 @@
 // @flow
-import validate from 'validate.js';
-import {Map} from 'immutable';
-import {Article, ArticleFields} from "./Article";
+import v1 from 'uuid';
 
-export const createArticle = (fields: ArticleFields): ?Article => {
-  if (
-    validate.isString(fields.title) &&
-    validate.isString(fields.author) &&
-    !validate({
-      title: fields.title,
-      author: fields.author
-    }, {
-      title: {presence: {allowEmpty: false}},
-      author: {presence: {allowEmpty: false}}
-    })
-  ) {
-    return Map(new Article(fields));
-  }
-  return null;
-};
+import type {Article} from "./Article";
+import type {Validator} from "./Validator";
+import {validatorService} from "./ValidatorService";
 
-export const incrementLikes = (article: Map<Article>, likes: number): Article => {
-  return article.merge({
-    likes
-  });
-};
+export type ArticleFields = {
+  +title: string;
+  +author: string;
+}
 
-const articleService = () => {
+export const createArticle = (validator: Validator) =>
+  ({title, author}: ArticleFields): ?Article => {
+    return (
+      validator.isString(title) &&
+      validator.isLengthGreaterThen(title, 1) &&
+      validator.isString(author) &&
+      validator.isLengthGreaterThen(author, 1)
+    ) ?
+      Object.freeze({
+        id: v1(),
+        likes: 0,
+        title,
+        author
+      }) :
+      null;
+  };
+
+export const updateLikes = (validator: Validator) =>
+  (article: Article, likes: number): Article => {
+    return validator.isObject(article) ?
+      Object.freeze({
+        ...article,
+        likes
+      }) :
+      article;
+  };
+
+export const articleService = () => {
+  const validator = validatorService();
   return {
-    createArticle,
-    incrementLikes
+    createArticle: createArticle(validator),
+    updateLikes: updateLikes(validator)
   }
 };
-
-export default articleService();
