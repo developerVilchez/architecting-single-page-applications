@@ -2,8 +2,7 @@
 import {update} from "ramda";
 
 import type {Article} from "../domain/Article";
-
-export type ArticleState = Article[];
+import type {ArticleState} from "../domain/ArticleState";
 
 export const addArticle = (articleState: ArticleState, article: Article) => articleState.concat(article);
 
@@ -24,7 +23,7 @@ export const unsubscribe = (subscribers: Function[], subscriber: Function): Func
 export const notify = (articleState: ArticleState, subscribers: Function[]) =>
   subscribers.forEach((s: Function) => s(articleState));
 
-export const articleStateService = (() => {
+export const articleStore = (() => {
   let articleState: ArticleState = Object.freeze([]);
   let subscribers: Function[] = Object.freeze([]);
 

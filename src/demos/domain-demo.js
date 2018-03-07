@@ -1,12 +1,12 @@
 // @flow
-import {articleService} from "../domain/ArticleService";
+import {ArticleService} from "../domain/ArticleService";
 
-const articleServiceInstance = articleService();
-const article = articleServiceInstance.createArticle({
+const articleService = ArticleService();
+const article = articleService.createArticle({
   title: '12 rules for life',
   author: 'Jordan Peterson'
 });
-const incrementedArticle = article ? articleServiceInstance.updateLikes(article, 4) : null;
+const incrementedArticle = article ? articleService.updateLikes(article, 4) : null;
 
 console.log('article', article);
 /*

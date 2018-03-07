@@ -37,7 +37,7 @@ export const updateLikes = (validator: Validator) =>
       article;
   };
 
-export const articleService = () => {
+export const ArticleService = () => {
   const validator = validatorService();
   return {
     createArticle: createArticle(validator),
