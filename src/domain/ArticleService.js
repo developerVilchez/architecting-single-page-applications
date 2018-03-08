@@ -2,15 +2,15 @@
 import v1 from 'uuid';
 
 import type {Article} from "./Article";
-import type {Validator} from "./Validator";
-import {validatorService} from "./ValidatorService";
+import type {Validators} from "./Validators";
+import {getValidators} from "./ValidatorService";
 
 export type ArticleFields = {
   +title: string;
   +author: string;
 }
 
-export const createArticle = (validator: Validator) =>
+export const createArticle = (validator: Validators) =>
   ({title, author}: ArticleFields): ?Article => {
     return (
       validator.isString(title) &&
@@ -27,7 +27,7 @@ export const createArticle = (validator: Validator) =>
       null;
   };
 
-export const updateLikes = (validator: Validator) =>
+export const updateLikes = (validator: Validators) =>
   (article: Article, likes: number): Article => {
     return validator.isObject(article) ?
       Object.freeze({
@@ -38,9 +38,9 @@ export const updateLikes = (validator: Validator) =>
   };
 
 export const ArticleService = () => {
-  const validator = validatorService();
+  const validators = getValidators();
   return {
-    createArticle: createArticle(validator),
-    updateLikes: updateLikes(validator)
+    createArticle: createArticle(validators),
+    updateLikes: updateLikes(validators)
   }
 };

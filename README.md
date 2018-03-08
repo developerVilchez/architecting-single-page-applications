@@ -92,11 +92,11 @@ Both methods are curried, taking a validator argument and returning another func
 
 
 
-ArticleService.jsLet’s take a quick look at the Validator entity and ValidatorService.
+ArticleService.jsLet’s take a quick look at the Validators entity and ValidatorService.
 
 
 
-Validator.jsPlease take these validations with a grain of salt, just for demo purposes. In JavaScript, checking if an object is, in fact, an object is not that easy. :)
+Validators.jsPlease take these validations with a grain of salt, just for demo purposes. In JavaScript, checking if an object is, in fact, an object is not that easy. :)
 
 
 

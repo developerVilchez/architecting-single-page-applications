@@ -2,7 +2,7 @@
 import {update} from "ramda";
 
 import type {Article} from "../domain/Article";
-import type {ArticleState} from "../domain/ArticleState";
+import type {ArticleState} from "./ArticleState";
 
 export const addArticle = (articleState: ArticleState, article: Article) => articleState.concat(article);
 
@@ -18,7 +18,10 @@ export const subscribe = (subscribers: Function[], subscriber: Function): Functi
   subscribers.concat(subscriber);
 
 export const unsubscribe = (subscribers: Function[], subscriber: Function): Function[] =>
-  subscribers.filter((s: Function) => s !== subscriber);
+  subscribers.filter((s: Function) => {
+  console.log('s === subscriber', s === subscriber)
+    return s !== subscriber
+  });
 
 export const notify = (articleState: ArticleState, subscribers: Function[]) =>
   subscribers.forEach((s: Function) => s(articleState));
@@ -42,9 +45,12 @@ export const articleStore = (() => {
     },
     subscribe: (subscriber: Function) => {
       subscribers = subscribe(subscribers, subscriber);
+      console.log(subscribers);
+      return subscriber;
     },
     unsubscribe: (subscriber: Function) => {
       subscribers = unsubscribe(subscribers, subscriber);
+      console.log('unsubscribe', subscribers);
     }
   }
 })();
