@@ -1,38 +1,36 @@
 // @flow
-import React from 'react';
+import * as React from 'react'
 
-import type {ArticleState} from "../store/ArticleState";
+import type {Article} from "../domain/Article";
 import {articleStore} from "../store/ArticleStore";
 import {ArticleListComponent} from "./ArticleList.component";
 
 type State = {
-  articles: [];
+  articles: Article[]
 }
 
-export const articleContainerHoc = (articleStore) => (ArticleListComponent: any) => {
-  return class extends React.Component<Props, State> {
-    constructor(props: Props) {
-      super(props);
+type Props = {};
 
-      this.state = {
-        articles: []
-      };
+export class ArticleListContainer extends React.Component<Props, State> {
+  subscriber: Function;
+  articleStore: any;
 
-      this.subscriber = articleStore.subscribe(this.mapStateToProps.bind(this));
-    }
-
-    mapStateToProps(articles: ArticleState) {
+  constructor(props: Props) {
+    super(props);
+    this.articleStore = articleStore;
+    this.state = {
+      articles: []
+    };
+    this.subscriber = this.articleStore.subscribe((articles: Article[]) => {
       this.setState({articles});
-    }
-
-    componentWillUnmount() {
-      articleStore.unsubscribe(this.subscriber);
-    }
-
-    render() {
-      return <ArticleListComponent {...this.state}/>;
-    }
+    });
   }
-};
 
-export const ArticleListContainer = articleContainerHoc(articleStore)(ArticleListComponent);
+  componentWillUnmount() {
+    this.articleStore.unsubscribe(this.subscriber);
+  }
+
+  render() {
+    return <ArticleListComponent {...this.state}/>;
+  }
+}

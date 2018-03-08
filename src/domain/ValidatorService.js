@@ -7,8 +7,7 @@ const isString = (toValidate: any) => typeof toValidate === 'string';
 
 const isLengthGreaterThen = (toValidate: string, length: number) => toValidate.length > length;
 
-// Todo rename into validatorService and return an object called get validators.
-export const getValidators = (): Validators => {
+export const ValidatorService = (): Validators => {
   return {
     isObject,
     isString,

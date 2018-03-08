@@ -3,7 +3,7 @@ import v1 from 'uuid';
 
 import type {Article} from "./Article";
 import type {Validators} from "./Validators";
-import {getValidators} from "./ValidatorService";
+import {ValidatorService} from "./ValidatorService";
 
 export type ArticleFields = {
   +title: string;
@@ -14,9 +14,9 @@ export const createArticle = (validator: Validators) =>
   ({title, author}: ArticleFields): ?Article => {
     return (
       validator.isString(title) &&
-      validator.isLengthGreaterThen(title, 1) &&
+      validator.isLengthGreaterThen(title, 0) &&
       validator.isString(author) &&
-      validator.isLengthGreaterThen(author, 1)
+      validator.isLengthGreaterThen(author, 0)
     ) ?
       Object.freeze({
         id: v1(),
@@ -38,7 +38,7 @@ export const updateLikes = (validator: Validators) =>
   };
 
 export const ArticleService = () => {
-  const validators = getValidators();
+  const validators = ValidatorService();
   return {
     createArticle: createArticle(validators),
     updateLikes: updateLikes(validators)

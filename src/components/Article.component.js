@@ -23,13 +23,13 @@ export const ArticleComponent = (props: Props) => {
       <p>{article.likes}</p>
       <button
         type="button"
-        onClick={() => likeArticle(article.id)}
+        onClick={() => likeArticle(article)}
       >
         Like
       </button>
       <button
         type="button"
-        onClick={() => deleteArticle(article.id)}
+        onClick={() => deleteArticle(article)}
       >
         Delete
       </button>

@@ -1,20 +1,20 @@
 // @flow
 import React from 'react';
 
+import type {FormData} from './ArticleForm.container';
+
 type Props = {
-  changeTitle: Function;
-  changeAuthor: Function;
-  invalidTitle: boolean;
-  invalidAuthor: boolean;
+  formData: FormData;
+  changeArticleTitle: Function;
+  changeArticleAuthor: Function;
   submitForm: Function;
 }
 
 export const ArticleFormComponent = (props: Props) => {
   const {
-    changeTitle,
-    changeAuthor,
-    invalidTitle,
-    invalidAuthor,
+    formData,
+    changeArticleTitle,
+    changeArticleAuthor,
     submitForm
   } = props;
 
@@ -35,9 +35,10 @@ export const ArticleFormComponent = (props: Props) => {
           id="article-title"
           name="articleTitle"
           autoComplete="off"
-          onChange={(event) => changeTitle(event)}
+          value={formData.articleTitle.value}
+          onChange={changeArticleTitle}
         />
-        {invalidTitle && (<p>Please fill in the title</p>)}
+        {!formData.articleTitle.valid && (<p>Please fill in the title</p>)}
       </div>
       <div>
         <label htmlFor="article-author">Author</label>
@@ -46,9 +47,10 @@ export const ArticleFormComponent = (props: Props) => {
           id="article-author"
           name="articleAuthor"
           autoComplete="off"
-          onChange={(event) => changeAuthor(event)}
+          value={formData.articleAuthor.value}
+          onChange={changeArticleAuthor}
         />
-        {invalidAuthor && (<p>Please fill in the author</p>)}
+        {!formData.articleAuthor.valid && (<p>Please fill in the author</p>)}
       </div>
       <button
         type="submit"

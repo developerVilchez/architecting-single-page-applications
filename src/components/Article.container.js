@@ -1,40 +1,42 @@
 // @flow
 import React, {Component} from 'react';
 
+import type {Article} from "../domain/Article";
 import {ArticleComponent} from "./Article.component";
+import {articleStore} from "../store/ArticleStore";
+import {ArticleService} from "../domain/ArticleService";
 
 type Props = {
-  articles: Article[];
+  article: Article;
 };
 
 export class ArticleContainer extends Component<Props> {
-  likeArticle(id: string) {
-    console.log('Like article', id);
+  articleStore: any;
+  articleService: any;
+
+  constructor(props: Props) {
+    super(props);
+
+    this.articleStore = articleStore;
+    this.articleService = ArticleService();
   }
 
-  deleteArticle(id: string) {
-    console.log('Delete article', id);
+  likeArticle(article: Article) {
+    const updatedArticle = this.articleService.updateLikes(article, article.likes + 1);
+    this.articleStore.updateArticle(updatedArticle);
   }
 
-  submitForm(event: any) {
-    console.log('submitForm', event);
-  };
-
-  changeTitle(event: any) {
-    console.log('changeTitle', event);
-  };
-
-  changeAuthor(event: any) {
-    console.log('changeAuthor', event);
-  };
+  removeArticle(article: Article) {
+    this.articleStore.removeArticle(article);
+  }
 
   render() {
     return (
       <div>
         <ArticleComponent
           article={this.props.article}
-          likeArticle={this.likeArticle}
-          deleteArticle={this.deleteArticle}
+          likeArticle={(article: Article) => this.likeArticle(article)}
+          deleteArticle={(article: Article) => this.removeArticle(article)}
         />
       </div>
     )

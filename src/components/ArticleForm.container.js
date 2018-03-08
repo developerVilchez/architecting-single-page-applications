@@ -2,104 +2,125 @@
 import React, {Component} from 'react';
 import * as R from 'ramda';
 
-import type {Validators} from "../domain/Validators";
 import {ArticleFormComponent} from "./ArticleForm.component";
-import {getValidators} from "../domain/ValidatorService";
+import {ValidatorService} from "../domain/ValidatorService";
 import {ArticleService} from "../domain/ArticleService";
 import {articleStore} from "../store/ArticleStore";
 
-type Props = {
-  validators: Validators
+type Props = {};
+
+type FormField = {
+  value: string;
+  valid: boolean;
+}
+
+export type FormData = {
+  articleTitle: FormField;
+  articleAuthor: FormField;
 };
 
-type State = {
-  invalidTitle: boolean;
-  invalidAuthor: boolean
-};
+export class ArticleFormContainer extends Component<Props, FormData> {
+  articleStore: any;
+  articleService: any;
+  validators: any;
 
-class ArticleForm extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      invalidTitle: false,
-      invalidAuthor: false
+      articleTitle: {
+        value: '',
+        valid: true
+      },
+      articleAuthor: {
+        value: '',
+        valid: true
+      }
     };
 
-    this.articleService = ArticleService();
     this.articleStore = articleStore;
+    this.articleService = ArticleService();
+    this.validators = ValidatorService();
   }
 
-  submitForm(event) {
-    const articleTitle = this.getArticleTitle(event);
+  changeArticleTitle(event: any) {
+    this.setState(
+      R.assocPath(
+        ['articleTitle', 'value'],
+        R.path(['target', 'value'], event)
+      )
+    );
+  }
+
+  changeArticleAuthor(event: any) {
+    this.setState(
+      R.assocPath(
+        ['articleAuthor', 'value'],
+        R.path(['target', 'value'], event)
+      )
+    );
+  }
+
+  submitForm(event: any) {
+    const articleTitle = R.path(['target', 'articleTitle', 'value'], event);
+    const articleAuthor = R.path(['target', 'articleAuthor', 'value'], event);
+
     const isTitleValid = this.isTitleValid(articleTitle);
-    const articleAuthor = this.getArticleAuthor(event);
     const isAuthorValid = this.isAuthorValid(articleAuthor);
+
     if (isTitleValid && isAuthorValid) {
-      this.setState({
-        invalidTitle: false,
-        invalidAuthor: false
-      });
-      const article = this.articleService.createArticle({
+      this.articleStore.addArticle(this.articleService.createArticle({
         title: articleTitle,
         author: articleAuthor
-      });
-      this.articleStore.addArticle(article);
+      }));
+      this.clearForm();
     } else {
-      if (!isTitleValid) {
-        this.setState({invalidTitle: true});
-      }
-      if (!isAuthorValid) {
-        this.setState({invalidAuthor: true});
-      }
+      this.markInvalid(isTitleValid, isAuthorValid);
     }
   };
 
-  getArticleTitle(event) {
-    return R.path(['target', 'articleTitle', 'value'], event);
+  isTitleValid(title) {
+    return !!(
+      this.validators.isString(title) &&
+      this.validators.isLengthGreaterThen(title, 0)
+    );
   }
 
-  isTitleValid(title: string): boolean {
-    return this.props.validators.isString(title) &&
-      this.props.validators.isLengthGreaterThen(title, 1);
+  isAuthorValid(author): boolean {
+    return !!(
+      this.validators.isString(author) &&
+      this.validators.isLengthGreaterThen(author, 0)
+    );
   }
 
-  changeTitle(event) {
-    console.log('changeTitle', event);
-  };
-
-  getArticleAuthor(event) {
-    return R.path(['target', 'articleAuthor', 'value'], event);
+  clearForm() {
+    this.setState((state) => {
+      return R.pipe(
+        R.assocPath(['articleTitle', 'valid'], true),
+        R.assocPath(['articleTitle', 'value'], ''),
+        R.assocPath(['articleAuthor', 'valid'], true),
+        R.assocPath(['articleAuthor', 'value'], '')
+      )(state);
+    });
   }
 
-  isAuthorValid(author: string): boolean {
-    return this.props.validators.isString(author) &&
-      this.props.validators.isLengthGreaterThen(author, 1);
+  markInvalid(isTitleValid: boolean, isAuthorValid: boolean) {
+    this.setState((state) => {
+      return R.pipe(
+        R.assocPath(['articleTitle', 'valid'], isTitleValid),
+        R.assocPath(['articleAuthor', 'valid'], isAuthorValid)
+      )(state);
+    });
   }
-
-  changeAuthor(event) {
-    console.log('changeAuthor', event);
-  };
 
   render() {
     return (
       <ArticleFormComponent
-        changeTitle={this.changeTitle}
-        changeAuthor={this.changeAuthor}
-        invalidTitle={this.state.invalidTitle}
-        invalidAuthor={this.state.invalidAuthor}
+        formData={this.state}
         submitForm={this.submitForm.bind(this)}
+        changeArticleTitle={(event) => this.changeArticleTitle(event)}
+        changeArticleAuthor={(event) => this.changeArticleAuthor(event)}
       />
     )
   }
 }
-
-const articleFormHoc = (props: Props) => (WrappedComponent: any) => {
-  return class extends React.Component<any> {
-    render() {
-      return <WrappedComponent {...props}/>;
-    }
-  }
-};
-
-export const ArticleFormContainer = articleFormHoc({validators: getValidators()})(ArticleForm);
