@@ -4,6 +4,14 @@ import {update} from "ramda";
 import type {Article} from "../domain/Article";
 import type {ArticleState} from "./ArticleState";
 
+export type ArticleStore = {
+  addArticle(article: Article): void;
+  removeArticle(article: Article): void;
+  updateArticle(article: Article): void;
+  subscribe(subscriber: Function): Function;
+  unsubscribe(subscriber: Function): void;
+}
+
 export const addArticle = (articleState: ArticleState, article: Article) => articleState.concat(article);
 
 export const removeArticle = (articleState: ArticleState, article: Article) =>
@@ -14,16 +22,16 @@ export const updateArticle = (articleState: ArticleState, article: Article) => {
   return update(index, article, articleState);
 };
 
-export const subscribe = (subscribers: Function[], subscriber: Function): Function[] =>
+export const subscribe = (subscribers: Function[], subscriber: Function) =>
   subscribers.concat(subscriber);
 
-export const unsubscribe = (subscribers: Function[], subscriber: Function): Function[] =>
+export const unsubscribe = (subscribers: Function[], subscriber: Function) =>
   subscribers.filter((s: Function) => s !== subscriber);
 
 export const notify = (articleState: ArticleState, subscribers: Function[]) =>
   subscribers.forEach((s: Function) => s(articleState));
 
-export const articleStore = (() => {
+export const ArticleStoreFactory = (() => {
   let articleState: ArticleState = Object.freeze([]);
   let subscribers: Function[] = Object.freeze([]);
 
@@ -48,4 +56,6 @@ export const articleStore = (() => {
       subscribers = unsubscribe(subscribers, subscriber);
     }
   }
-})();
+});
+
+export const articleStore = ArticleStoreFactory();

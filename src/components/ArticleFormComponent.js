@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import type {FormData} from './ArticleForm.container';
+import type {FormData} from './ArticleFormContainer';
 
 type Props = {
   formData: FormData;

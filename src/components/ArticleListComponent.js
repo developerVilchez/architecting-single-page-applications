@@ -2,7 +2,7 @@
 import React from 'react';
 
 import type {Article} from "../domain/Article";
-import {ArticleContainer} from "./Article.container";
+import {ArticleContainer} from "./ArticleContainer";
 
 type Props = {
   articles: Article[]

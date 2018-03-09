@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 
 import './App.css';
 
-import {ArticleFormContainer} from "./components/ArticleForm.container";
-import {ArticleListContainer} from "./components/ArticleList.container";
+import {ArticleFormContainer} from "./components/ArticleFormContainer";
+import {ArticleListContainer} from "./components/ArticleListContainer";
 
 type Props = {};
 

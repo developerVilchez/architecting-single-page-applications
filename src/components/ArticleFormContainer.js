@@ -1,11 +1,15 @@
 // @flow
 import React, {Component} from 'react';
 import * as R from 'ramda';
+import {path, assocPath} from "ramda";
 
-import {ArticleFormComponent} from "./ArticleForm.component";
-import {ValidatorService} from "../domain/ValidatorService";
-import {ArticleService} from "../domain/ArticleService";
-import {articleStore} from "../store/ArticleStore";
+import type {ArticleStore} from "../store/ArticleStoreFactory";
+import type {ArticleService} from "../domain/ArticleServiceFactory";
+import type {ValidatorService} from "../domain/ValidatorServiceFactory";
+import {ArticleServiceFactory} from "../domain/ArticleServiceFactory";
+import {ValidatorServiceFactory} from "../domain/ValidatorServiceFactory";
+import {articleStore} from "../store/ArticleStoreFactory";
+import {ArticleFormComponent} from "./ArticleFormComponent";
 
 type Props = {};
 
@@ -20,9 +24,9 @@ export type FormData = {
 };
 
 export class ArticleFormContainer extends Component<Props, FormData> {
-  articleStore: any;
-  articleService: any;
-  validators: any;
+  articleStore: ArticleStore;
+  articleService: ArticleService;
+  validatorService: ValidatorService;
 
   constructor(props: Props) {
     super(props);
@@ -39,57 +43,60 @@ export class ArticleFormContainer extends Component<Props, FormData> {
     };
 
     this.articleStore = articleStore;
-    this.articleService = ArticleService();
-    this.validators = ValidatorService();
+    this.articleService = ArticleServiceFactory();
+    this.validatorService = ValidatorServiceFactory();
   }
 
-  changeArticleTitle(event: any) {
+  changeArticleTitle(event: Event) {
     this.setState(
-      R.assocPath(
+      assocPath(
         ['articleTitle', 'value'],
-        R.path(['target', 'value'], event)
+        path(['target', 'value'], event)
       )
     );
   }
 
-  changeArticleAuthor(event: any) {
+  changeArticleAuthor(event: Event) {
     this.setState(
-      R.assocPath(
+      assocPath(
         ['articleAuthor', 'value'],
-        R.path(['target', 'value'], event)
+        path(['target', 'value'], event)
       )
     );
   }
 
-  submitForm(event: any) {
-    const articleTitle = R.path(['target', 'articleTitle', 'value'], event);
-    const articleAuthor = R.path(['target', 'articleAuthor', 'value'], event);
+  submitForm(event: Event) {
+    const articleTitle = path(['target', 'articleTitle', 'value'], event);
+    const articleAuthor = path(['target', 'articleAuthor', 'value'], event);
 
     const isTitleValid = this.isTitleValid(articleTitle);
     const isAuthorValid = this.isAuthorValid(articleAuthor);
 
     if (isTitleValid && isAuthorValid) {
-      this.articleStore.addArticle(this.articleService.createArticle({
+      const newArticle = this.articleService.createArticle({
         title: articleTitle,
         author: articleAuthor
-      }));
+      });
+      if (newArticle) {
+        this.articleStore.addArticle(newArticle);
+      }
       this.clearForm();
     } else {
       this.markInvalid(isTitleValid, isAuthorValid);
     }
   };
 
-  isTitleValid(title) {
-    return !!(
-      this.validators.isString(title) &&
-      this.validators.isLengthGreaterThen(title, 0)
+  isTitleValid(title: string) {
+    return (
+      this.validatorService.isString(title) &&
+      this.validatorService.isLengthGreaterThen(title, 0)
     );
   }
 
-  isAuthorValid(author): boolean {
-    return !!(
-      this.validators.isString(author) &&
-      this.validators.isLengthGreaterThen(author, 0)
+  isAuthorValid(author: string) {
+    return (
+      this.validatorService.isString(author) &&
+      this.validatorService.isLengthGreaterThen(author, 0)
     );
   }
 

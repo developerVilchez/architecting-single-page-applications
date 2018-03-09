@@ -1,7 +1,8 @@
-import {ArticleService} from "../domain/ArticleService";
+// @flow
+import {ArticleServiceFactory} from "../domain/ArticleServiceFactory";
 import {ArticleUiService} from "../services/ArticleUiService";
 
-const articleService = ArticleService();
+const articleService = ArticleServiceFactory();
 const articleUiService = ArticleUiService();
 
 const article = articleService.createArticle({
@@ -16,5 +17,7 @@ const authorName = article ?
 console.log(authorName);
 // It will print JORDAN PETERSON
 
-console.log(article.author);
+if (article) {
+  console.log(article.author);
 // It will print Jordan Peterson
+}

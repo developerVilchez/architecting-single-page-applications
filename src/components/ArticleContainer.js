@@ -2,23 +2,25 @@
 import React, {Component} from 'react';
 
 import type {Article} from "../domain/Article";
-import {ArticleComponent} from "./Article.component";
-import {articleStore} from "../store/ArticleStore";
-import {ArticleService} from "../domain/ArticleService";
+import type {ArticleService} from "../domain/ArticleServiceFactory";
+import type {ArticleStore} from "../store/ArticleStoreFactory";
+import {ArticleComponent} from "./ArticleComponent";
+import {articleStore} from "../store/ArticleStoreFactory";
+import {ArticleServiceFactory} from "../domain/ArticleServiceFactory";
 
 type Props = {
   article: Article;
 };
 
 export class ArticleContainer extends Component<Props> {
-  articleStore: any;
-  articleService: any;
+  articleStore: ArticleStore;
+  articleService: ArticleService;
 
   constructor(props: Props) {
     super(props);
 
     this.articleStore = articleStore;
-    this.articleService = ArticleService();
+    this.articleService = ArticleServiceFactory();
   }
 
   likeArticle(article: Article) {
