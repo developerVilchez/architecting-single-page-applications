@@ -130,12 +130,12 @@ Let’s create two articles and two subscribers to the store and observe how the
 Application services
 This layer is useful for doing all kinds of operations which are adjacent to the state flow like Ajax calls to retrieve data from the server or state projections.
 For whatever reason, a designer comes and demands all article author names to be uppercase.
-We know this request is kind of silly and we don’t want to pollute our model with it. So we create the ArticleUiService to handle this feature.
+We know this request is kind of silly and we don’t want to pollute our model with it. So we create the ArticleUiServiceFactory to handle this feature.
 The service will take a piece of state, the author’s name, and project it, returning the uppercase version of the author’s name to the caller.
 
 
 
-ArticleUiService.jsLet’s see a demo on how to consume this service!
+ArticleUiServiceFactory.jsLet’s see a demo on how to consume this service!
 
 
 

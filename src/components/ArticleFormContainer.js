@@ -1,7 +1,7 @@
 // @flow
 import React, {Component} from 'react';
-import * as R from 'ramda';
 import {path, assocPath} from "ramda";
+import * as R from 'ramda';
 
 import type {ArticleStore} from "../store/ArticleStoreFactory";
 import type {ArticleService} from "../domain/ArticleServiceFactory";

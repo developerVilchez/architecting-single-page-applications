@@ -1,9 +1,9 @@
 // @flow
 import {ArticleServiceFactory} from "../domain/ArticleServiceFactory";
-import {ArticleUiService} from "../services/ArticleUiService";
+import {ArticleUiServiceFactory} from "../services/ArticleUiServiceFactory";
 
 const articleService = ArticleServiceFactory();
-const articleUiService = ArticleUiService();
+const articleUiService = ArticleUiServiceFactory();
 
 const article = articleService.createArticle({
   title: '12 rules for life',
@@ -11,7 +11,7 @@ const article = articleService.createArticle({
 });
 
 const authorName = article ?
-  articleUiService.getAuthorName(article) :
+  articleUiService.displayAuthor(article.author) :
   null;
 
 console.log(authorName);

@@ -2,9 +2,11 @@
 import React from 'react';
 
 import type {Article} from "../domain/Article";
+import type {ArticleUiService} from "../services/ArticleUiServiceFactory";
 
 type Props = {
   article: Article;
+  articleUiService: ArticleUiService;
   likeArticle: Function;
   deleteArticle: Function;
 }
@@ -12,6 +14,7 @@ type Props = {
 export const ArticleComponent = (props: Props) => {
   const {
     article,
+    articleUiService,
     likeArticle,
     deleteArticle
   } = props;
@@ -19,7 +22,7 @@ export const ArticleComponent = (props: Props) => {
   return (
     <div>
       <h3>{article.title}</h3>
-      <p>{article.author}</p>
+      <p>{articleUiService.displayAuthor(article.author)}</p>
       <p>{article.likes}</p>
       <button
         type="button"

@@ -8,9 +8,7 @@ import {ArticleListContainer} from "./components/ArticleListContainer";
 
 type Props = {};
 
-type State = {};
-
-class App extends Component<Props, State> {
+class App extends Component<Props> {
   render() {
     return (
       <div className="App">
