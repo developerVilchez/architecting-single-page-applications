@@ -4,11 +4,10 @@ import * as R from 'ramda';
 
 import type {ArticleStore} from "../store/ArticleStoreFactory";
 import type {ArticleService} from "../domain/ArticleServiceFactory";
-import type {ValidatorService} from "../domain/ValidatorServiceFactory";
 import {ArticleServiceFactory} from "../domain/ArticleServiceFactory";
-import {ValidatorServiceFactory} from "../domain/ValidatorServiceFactory";
 import {ArticleFormComponent} from "./ArticleFormComponent";
 import {articleStore} from "../store/ArticleStoreFactory";
+import * as validators from "../domain/Validators";
 
 type Props = {};
 
@@ -25,7 +24,6 @@ export type FormData = {
 export class ArticleFormContainer extends Component<Props, FormData> {
   articleStore: ArticleStore;
   articleService: ArticleService;
-  validatorService: ValidatorService;
 
   constructor(props: Props) {
     super(props);
@@ -43,7 +41,6 @@ export class ArticleFormContainer extends Component<Props, FormData> {
 
     this.articleStore = articleStore;
     this.articleService = ArticleServiceFactory();
-    this.validatorService = ValidatorServiceFactory();
   }
 
   changeArticleTitle(event: Event) {
@@ -87,15 +84,15 @@ export class ArticleFormContainer extends Component<Props, FormData> {
 
   isTitleValid(title: string) {
     return (
-      this.validatorService.isString(title) &&
-      this.validatorService.isLengthGreaterThen(title, 0)
+      validators.isString(title) &&
+      validators.isLengthGreaterThen(title, 0)
     );
   }
 
   isAuthorValid(author: string) {
     return (
-      this.validatorService.isString(author) &&
-      this.validatorService.isLengthGreaterThen(author, 0)
+      validators.isString(author) &&
+      validators.isLengthGreaterThen(author, 0)
     );
   }
 
