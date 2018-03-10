@@ -17,20 +17,6 @@ export type ArticleService = {
   isAuthorValid(author: string): boolean;
 }
 
-export const isTitleValid = (title: string) => {
-  return R.allPass([
-    validators.isString,
-    validators.isLengthGreaterThen(0)
-  ])(title);
-};
-
-export const isAuthorValid = (author: string) => {
-  return R.allPass([
-    validators.isString,
-    validators.isLengthGreaterThen(0)
-  ])(author);
-};
-
 export const createArticle = (articleFields: ArticleFields) => {
   const {title, author} = articleFields;
   return isTitleValid(title) && isAuthorValid(author) ?
@@ -52,11 +38,26 @@ export const updateLikes = (article: Article, likes: number) => {
     article;
 };
 
+
+export const isTitleValid = (title: string) => {
+  return R.allPass([
+    validators.isString,
+    validators.isLengthGreaterThen(0)
+  ])(title);
+};
+
+export const isAuthorValid = (author: string) => {
+  return R.allPass([
+    validators.isString,
+    validators.isLengthGreaterThen(0)
+  ])(author);
+};
+
 export const ArticleServiceFactory = () => {
   return {
-    isTitleValid,
-    isAuthorValid,
     createArticle,
-    updateLikes
+    updateLikes,
+    isTitleValid,
+    isAuthorValid
   }
 };
