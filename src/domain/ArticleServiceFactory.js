@@ -29,35 +29,29 @@ export const createArticle = (articleFields: ArticleFields) => {
     null;
 };
 
-export const updateLikes = (article: Article, likes: number) => {
-  return validators.isObject(article) ?
+export const updateLikes = (article: Article, likes: number) =>
+  validators.isObject(article) ?
     Object.freeze({
       ...article,
       likes
     }) :
     article;
-};
 
-
-export const isTitleValid = (title: string) => {
-  return R.allPass([
+export const isTitleValid = (title: string) =>
+  R.allPass([
     validators.isString,
     validators.isLengthGreaterThen(0)
   ])(title);
-};
 
-export const isAuthorValid = (author: string) => {
-  return R.allPass([
+export const isAuthorValid = (author: string) =>
+  R.allPass([
     validators.isString,
     validators.isLengthGreaterThen(0)
   ])(author);
-};
 
-export const ArticleServiceFactory = () => {
-  return {
-    createArticle,
-    updateLikes,
-    isTitleValid,
-    isAuthorValid
-  }
-};
+export const ArticleServiceFactory = () => ({
+  createArticle,
+  updateLikes,
+  isTitleValid,
+  isAuthorValid
+});
