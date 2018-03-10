@@ -13,8 +13,7 @@
     "eject": "react-scripts eject",
     "flow": "flow",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "sw": "npm shrinkwrap --dev"
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "ramda": "0.25.0",

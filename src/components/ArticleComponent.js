@@ -2,11 +2,10 @@
 import React from 'react';
 
 import type {Article} from "../domain/Article";
-import type {ArticleUiService} from "../services/ArticleUiServiceFactory";
+import * as articleUiService from "../services/ArticleUiService";
 
 type Props = {
   article: Article;
-  articleUiService: ArticleUiService;
   likeArticle: Function;
   deleteArticle: Function;
 }
@@ -14,7 +13,6 @@ type Props = {
 export const ArticleComponent = (props: Props) => {
   const {
     article,
-    articleUiService,
     likeArticle,
     deleteArticle
   } = props;

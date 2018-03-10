@@ -1,6 +1,5 @@
 // @flow
 import React, {Component} from 'react';
-import {path, assocPath} from "ramda";
 import * as R from 'ramda';
 
 import type {ArticleStore} from "../store/ArticleStoreFactory";
@@ -8,8 +7,8 @@ import type {ArticleService} from "../domain/ArticleServiceFactory";
 import type {ValidatorService} from "../domain/ValidatorServiceFactory";
 import {ArticleServiceFactory} from "../domain/ArticleServiceFactory";
 import {ValidatorServiceFactory} from "../domain/ValidatorServiceFactory";
-import {articleStore} from "../store/ArticleStoreFactory";
 import {ArticleFormComponent} from "./ArticleFormComponent";
+import {articleStore} from "../store/ArticleStoreFactory";
 
 type Props = {};
 
@@ -49,25 +48,25 @@ export class ArticleFormContainer extends Component<Props, FormData> {
 
   changeArticleTitle(event: Event) {
     this.setState(
-      assocPath(
+      R.assocPath(
         ['articleTitle', 'value'],
-        path(['target', 'value'], event)
+        R.path(['target', 'value'], event)
       )
     );
   }
 
   changeArticleAuthor(event: Event) {
     this.setState(
-      assocPath(
+      R.assocPath(
         ['articleAuthor', 'value'],
-        path(['target', 'value'], event)
+        R.path(['target', 'value'], event)
       )
     );
   }
 
   submitForm(event: Event) {
-    const articleTitle = path(['target', 'articleTitle', 'value'], event);
-    const articleAuthor = path(['target', 'articleAuthor', 'value'], event);
+    const articleTitle = R.path(['target', 'articleTitle', 'value'], event);
+    const articleAuthor = R.path(['target', 'articleAuthor', 'value'], event);
 
     const isTitleValid = this.isTitleValid(articleTitle);
     const isAuthorValid = this.isAuthorValid(articleAuthor);
