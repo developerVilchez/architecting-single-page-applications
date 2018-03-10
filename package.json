@@ -12,7 +12,8 @@
     "eject": "react-scripts eject",
     "flow": "flow",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "sw": "npm shrinkwrap --dev"
   },
   "dependencies": {
     "ramda": "0.25.0",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "flow-bin": "0.65.0",
-    "flow-typed": "2.3.0"
+    "flow-typed": "2.3.0",
+    "gh-pages": "1.1.0"
   }
 }
