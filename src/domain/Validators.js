@@ -3,4 +3,4 @@ export const isObject = (toValidate: any) => !!(toValidate && typeof toValidate 
 
 export const isString = (toValidate: any) => typeof toValidate === 'string';
 
-export const isLengthGreaterThen = (toValidate: string, length: number) => toValidate.length > length;
+export const isLengthGreaterThen = (length: number) => (toValidate: string) => toValidate.length > length;

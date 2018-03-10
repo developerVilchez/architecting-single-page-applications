@@ -1,5 +1,6 @@
 // @flow
 import v1 from 'uuid';
+import * as R from 'ramda';
 
 import type {Article} from "./Article";
 import * as validators from "./Validators";
@@ -12,16 +13,27 @@ export type ArticleFields = {
 export type ArticleService = {
   createArticle(articleFields: ArticleFields): ?Article;
   updateLikes(article: Article, likes: number): Article;
+  isTitleValid(title: string): boolean;
+  isAuthorValid(author: string): boolean;
 }
+
+export const isTitleValid = (title: string) => {
+  return R.allPass([
+    validators.isString,
+    validators.isLengthGreaterThen(0)
+  ])(title);
+};
+
+export const isAuthorValid = (author: string) => {
+  return R.allPass([
+    validators.isString,
+    validators.isLengthGreaterThen(0)
+  ])(author);
+};
 
 export const createArticle = (articleFields: ArticleFields) => {
   const {title, author} = articleFields;
-  return (
-    validators.isString(title) &&
-    validators.isLengthGreaterThen(title, 0) &&
-    validators.isString(author) &&
-    validators.isLengthGreaterThen(author, 0)
-  ) ?
+  return isTitleValid(title) && isAuthorValid(author) ?
     Object.freeze({
       id: v1(),
       likes: 0,
@@ -42,6 +54,8 @@ export const updateLikes = (article: Article, likes: number) => {
 
 export const ArticleServiceFactory = () => {
   return {
+    isTitleValid,
+    isAuthorValid,
     createArticle,
     updateLikes
   }

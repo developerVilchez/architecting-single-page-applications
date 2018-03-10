@@ -7,7 +7,6 @@ import type {ArticleService} from "../domain/ArticleServiceFactory";
 import {ArticleServiceFactory} from "../domain/ArticleServiceFactory";
 import {ArticleFormComponent} from "./ArticleFormComponent";
 import {articleStore} from "../store/ArticleStoreFactory";
-import * as validators from "../domain/Validators";
 
 type Props = {};
 
@@ -65,8 +64,8 @@ export class ArticleFormContainer extends Component<Props, FormData> {
     const articleTitle = R.path(['target', 'articleTitle', 'value'], event);
     const articleAuthor = R.path(['target', 'articleAuthor', 'value'], event);
 
-    const isTitleValid = this.isTitleValid(articleTitle);
-    const isAuthorValid = this.isAuthorValid(articleAuthor);
+    const isTitleValid = this.articleService.isTitleValid(articleTitle);
+    const isAuthorValid = this.articleService.isAuthorValid(articleAuthor);
 
     if (isTitleValid && isAuthorValid) {
       const newArticle = this.articleService.createArticle({
@@ -81,20 +80,6 @@ export class ArticleFormContainer extends Component<Props, FormData> {
       this.markInvalid(isTitleValid, isAuthorValid);
     }
   };
-
-  isTitleValid(title: string) {
-    return (
-      validators.isString(title) &&
-      validators.isLengthGreaterThen(title, 0)
-    );
-  }
-
-  isAuthorValid(author: string) {
-    return (
-      validators.isString(author) &&
-      validators.isLengthGreaterThen(author, 0)
-    );
-  }
 
   clearForm() {
     this.setState((state) => {
