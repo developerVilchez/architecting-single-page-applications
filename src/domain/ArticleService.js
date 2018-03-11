@@ -17,7 +17,7 @@ export type ArticleService = {
   isAuthorValid(author: string): boolean;
 }
 
-export const createArticle = (articleFields: ArticleFields) => {
+export const createArticle = (articleFields: ArticleFields): ?Article => {
   const {title, author} = articleFields;
   return isTitleValid(title) && isAuthorValid(author) ?
     Object.freeze({
