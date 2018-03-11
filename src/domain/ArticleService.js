@@ -55,3 +55,5 @@ export const ArticleServiceFactory = () => ({
   isTitleValid,
   isAuthorValid
 });
+
+export const articleService = ArticleServiceFactory();

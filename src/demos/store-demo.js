@@ -1,9 +1,7 @@
 // @flow
 import type {ArticleState} from "../store/ArticleState";
-import {articleStore} from "../store/ArticleStoreFactory";
-import {ArticleServiceFactory} from "../domain/ArticleServiceFactory";
-
-const articleService = ArticleServiceFactory();
+import {articleService} from "../domain/ArticleService";
+import {articleStore} from "../store/ArticleStore";
 
 const article1 = articleService.createArticle({
   title: '12 rules for life',

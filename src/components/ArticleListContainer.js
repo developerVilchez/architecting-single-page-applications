@@ -2,8 +2,8 @@
 import * as React from 'react'
 
 import type {Article} from "../domain/Article";
-import type {ArticleStore} from "../store/ArticleStoreFactory";
-import {articleStore} from "../store/ArticleStoreFactory";
+import type {ArticleStore} from "../store/ArticleStore";
+import {articleStore} from "../store/ArticleStore";
 import {ArticleListComponent} from "./ArticleListComponent";
 
 type State = {

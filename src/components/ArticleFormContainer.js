@@ -2,11 +2,11 @@
 import React, {Component} from 'react';
 import * as R from 'ramda';
 
-import type {ArticleStore} from "../store/ArticleStoreFactory";
-import type {ArticleService} from "../domain/ArticleServiceFactory";
-import {ArticleServiceFactory} from "../domain/ArticleServiceFactory";
+import type {ArticleService} from "../domain/ArticleService";
+import type {ArticleStore} from "../store/ArticleStore";
+import {articleService} from "../domain/ArticleService";
+import {articleStore} from "../store/ArticleStore";
 import {ArticleFormComponent} from "./ArticleFormComponent";
-import {articleStore} from "../store/ArticleStoreFactory";
 
 type Props = {};
 
@@ -39,7 +39,7 @@ export class ArticleFormContainer extends Component<Props, FormData> {
     };
 
     this.articleStore = articleStore;
-    this.articleService = ArticleServiceFactory();
+    this.articleService = articleService;
   }
 
   changeArticleTitle(event: Event) {
